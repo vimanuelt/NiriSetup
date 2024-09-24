@@ -73,6 +73,8 @@ When you run the `NiriSetup` application, you will see a list of options:
 4. **Save Logs**: Saves a log of the installation process to a file (`/tmp/nirisetup.log`).
 5. **Exit**: Quits the application.
 
+<img src='./img/nirisetup.jpg' width=60%>
+
 ## Log File
 
 By default, the log file is saved to `/tmp/nirisetup.log`. You can review this file for any errors or information about the setup process.
