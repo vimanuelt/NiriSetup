@@ -73,7 +73,7 @@ When you run the `NiriSetup` application, you will see a list of options:
 4. **Save Logs**: Saves a log of the installation process to a file (`/tmp/nirisetup.log`).
 5. **Exit**: Quits the application.
 
-<img src='./img/nirisetup.jpg' width=60%>
+<img src='./img/nirisetup.png' width=60%>
 
 ## Log File
 
