@@ -116,7 +116,7 @@ func (m model) View() string {
 
 func installNiri() tea.Cmd {
 	return func() tea.Msg {
-		pkgs := []string{"niri", "wlroots", "xwayland-satellite", "waybar", "grim", "jq", "wofi", "alacritty", "pam_xdg", "fuzzel", "swaylock", "foot", "wlsunset", "swaybg", "mako", "swayidle"}
+		pkgs := []string{"niri", "wlroots", "xwayland-satellite", "seatd", "waybar", "grim", "jq", "wofi", "alacritty", "pam_xdg", "fuzzel", "swaylock", "foot", "wlsunset", "swaybg", "mako", "swayidle"}
 		for _, pkg := range pkgs {
 			cmd := exec.Command("sudo", "pkg", "install", "-y", pkg)
 			out, err := cmd.CombinedOutput()
@@ -206,10 +206,19 @@ func saveLogsToFile(m model) tea.Cmd {
 }
 
 func setupEnvironment() {
-	os.Setenv("XDG_RUNTIME_DIR", "/tmp")
-	if _, err := os.Stat("/tmp"); os.IsNotExist(err) {
-		if err := os.Mkdir("/tmp", 0700); err != nil {
-			log.Println("Failed to create /tmp:", err)
+	// Get the current user's ID
+	userID := os.Geteuid()
+
+	// Construct the runtime directory path using the user ID
+	runtimeDir := fmt.Sprintf("/tmp/%d-runtime-dir", userID)
+
+	// Set the XDG_RUNTIME_DIR environment variable
+	os.Setenv("XDG_RUNTIME_DIR", runtimeDir)
+
+	// Create the directory if it doesn't exist
+	if _, err := os.Stat(runtimeDir); os.IsNotExist(err) {
+		if err := os.Mkdir(runtimeDir, 0700); err != nil {
+			log.Println("Failed to create runtime directory:", err)
 		}
 	}
 }
