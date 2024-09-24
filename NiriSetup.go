@@ -167,7 +167,7 @@ func (m model) View() string {
 
 func (m model) renderMenuView() string {
     // Title section, centered and fixed width
-    title := titleStyle.Render("NiriSetup Assistant for FreeBSD")
+    title := titleStyle.Render("Niri Setup Assistant for FreeBSD")
 
     // Menu rendering with fixed width and left alignment
     menu := strings.Builder{}
