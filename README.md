@@ -17,7 +17,7 @@ Before running NiriSetup, ensure the following dependencies are installed on you
 - **Niri** (the Wayland compositor)
 - **Bubble Tea** (Go TUI library)
 - **Lipgloss** (Go terminal styling library)
-- **Other dependencies**: `wlroots`, `xwayland`, `waybar`, `grim`, `jq`, `wofi`, `alacritty`, `pam_xdg`, `niripaper`.
+- **Other dependencies**: `wlroots`, `xwayland-satellite`, `waybar`, `grim`, `jq`, `wofi`, `alacritty`, `pam_xdg`, `swayidle`.
 
 > **Note**: NiriSetup will install Niri and the other required dependencies automatically if they are not already installed.
 
