@@ -198,7 +198,13 @@ layout {
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
-// spawn-at-startup "alacritty" "-e" "fish"
+spawn-at-startup "niri" "msg" "action" "focus-workspace" "2"
+spawn-at-startup "foot" "--server"
+spawn-at-startup "xwayland-satellite"
+spawn-at-startup "mako"
+spawn-at-startup "wlsunset" "-l" "35" "-L" "139"
+spawn-at-startup "env" "DISPLAY=:1" "desktop"
+
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.

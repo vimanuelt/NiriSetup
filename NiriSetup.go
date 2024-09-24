@@ -116,7 +116,7 @@ func (m model) View() string {
 
 func installNiri() tea.Cmd {
 	return func() tea.Msg {
-		pkgs := []string{"niri", "wlroots", "xwayland", "waybar", "grim", "jq", "wofi", "alacritty", "pam_xdg", "fuzzel", "swaylock" }
+		pkgs := []string{"niri", "wlroots", "xwayland-satellite", "waybar", "grim", "jq", "wofi", "alacritty", "pam_xdg", "fuzzel", "swaylock", "foot", "wlsunset", "swaybg", "mako", "swayidle"}
 		for _, pkg := range pkgs {
 			cmd := exec.Command("sudo", "pkg", "install", "-y", pkg)
 			out, err := cmd.CombinedOutput()
