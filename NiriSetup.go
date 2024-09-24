@@ -33,16 +33,57 @@ type model struct {
 	actionMsg    string
 }
 
+// Set consistent height and width for all views
+const viewHeight = 12
+const viewWidth = 50
+const menuItemWidth = 25 // Adjusted width for better alignment
+
+// Styles
+var (
+	// Title style
+	titleStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("#00ff00")). // Green color
+		Padding(1, 2).
+		Align(lipgloss.Center).
+		Width(viewWidth). // Set consistent width
+		Height(2)         // Reduced height for title area
+
+	// Menu style with consistent padding for all menu items
+	menuStyle = lipgloss.NewStyle().
+		Align(lipgloss.Left).
+		Width(viewWidth)
+
+	// Cursor style
+	cursorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#00ff00")).Bold(true)
+
+	// Dimmed style for non-selected options
+	disabledStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
+
+	// Log and action message styles
+	logStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("63")).Padding(1, 2).Width(viewWidth)
+	actionStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#00ff00")).Padding(1, 2).Align(lipgloss.Center).Width(viewWidth)
+)
+
 type statusMsg struct {
 	status string
 	err    error
 }
 
 func initialModel() model {
+	// Clear the terminal screen
+	clearScreen()
+
 	return model{
 		state:   menuView,
 		choices: []string{"Install Niri", "Configure Niri", "Validate Config", "Save Logs", "Exit"},
 	}
+}
+
+func clearScreen() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
 
 func (m model) Init() tea.Cmd {
@@ -125,32 +166,42 @@ func (m model) View() string {
 }
 
 func (m model) renderMenuView() string {
-	s := "NiriSetup Assistant for FreeBSD\n\n"
-	for i, choice := range m.choices {
-		cursor := " "
-		if m.cursor == i {
-			cursor = ">" // cursor for the selected option
-		}
-		s += fmt.Sprintf("%s %s\n", cursor, choice)
-	}
-	if m.actionMsg != "" {
-		s += fmt.Sprintf("\n%s\n", lipgloss.NewStyle().Foreground(lipgloss.Color("#FFA07A")).Render(m.actionMsg))
-		m.actionMsg = "" // Clear after showing once
-	}
-	return lipgloss.NewStyle().Padding(1, 2).Render(s)
+    // Title section, centered and fixed width
+    title := titleStyle.Render("NiriSetup Assistant for FreeBSD")
+
+    // Menu rendering with fixed width and left alignment
+    menu := strings.Builder{}
+    for i, choice := range m.choices {
+        if m.cursor == i {
+            // Selected item with cursor, ensure the same width for alignment
+            menu.WriteString(cursorStyle.Render(fmt.Sprintf("> %-"+fmt.Sprintf("%d", menuItemWidth-2)+"s", choice)) + "\n")
+        } else {
+            // Non-selected items with consistent width and left padding
+            menu.WriteString(disabledStyle.Render(fmt.Sprintf("  %-"+fmt.Sprintf("%d", menuItemWidth-2)+"s", choice)) + "\n")
+        }
+    }
+
+    // Join title and menu together and render them with consistent alignment
+    return lipgloss.JoinVertical(lipgloss.Left, title, menuStyle.Render(menu.String()))
 }
 
 func (m model) renderInstallView() string {
-	s := "Installing Niri...\n\n"
+	// Title and logs section with consistent width
+	s := titleStyle.Render("Installing Niri...")
+
+	// Logs section
 	for _, log := range m.logs {
-		s += lipgloss.NewStyle().Foreground(lipgloss.Color("#FFA07A")).Render(log + "\n")
+		s += logStyle.Render(log + "\n")
 	}
-	s += "Please wait...\n"
-	return lipgloss.NewStyle().Padding(1, 2).Render(s)
+	s += logStyle.Render("Please wait...\n")
+
+	// Ensure fixed height for the view
+	return lipgloss.JoinVertical(lipgloss.Left, s)
 }
 
 func (m model) renderActionView() string {
-	return lipgloss.NewStyle().Padding(1, 2).Render(fmt.Sprintf("%s\n\nPlease wait...", m.actionMsg))
+	// Display the action message prominently with consistent width
+	return lipgloss.JoinVertical(lipgloss.Left, actionStyle.Render(fmt.Sprintf("%s\n\nPlease wait...", m.actionMsg)))
 }
 
 func installNiri() tea.Cmd {
