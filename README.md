@@ -30,30 +30,23 @@ Make sure Go is installed on your system:
 sudo pkg install go
 ```
 
-### Step 2: Install Bubble Tea and Lipgloss
-
-To use the TUI interface for NiriSetup, install the required Go packages:
-
-```bash
-go get github.com/charmbracelet/bubbletea
-go get github.com/charmbracelet/lipgloss
-```
-
-### Step 3: Clone and Build NiriSetup
+### Step 2: Clone and Build NiriSetup
 
 Clone the NiriSetup repository and build the application:
 
 ```bash
 git clone https://github.com/vimanuelt/NiriSetup
 cd NiriSetup
+go mod init NiriSetup
+go mod tidy
 go build -o NiriSetup .
 ```
 
-### Step 4: Prepare the Configuration File
+### Step 3: Prepare the Configuration File
 
 Make sure you have the `config.kdl` file in the same directory as the NiriSetup application. If you don’t have a configuration file, generate one with Niri or copy it from the Niri repository.
 
-### Step 5: Run NiriSetup
+### Step 4: Run NiriSetup
 
 Once everything is set up, you can run NiriSetup:
 
