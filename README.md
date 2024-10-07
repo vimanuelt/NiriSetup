@@ -11,7 +11,7 @@ NiriSetup is a terminal-based assistant for setting up and configuring the [Niri
 
 ## Requirements
 
-Before running NiriSetup, ensure the following dependencies are installed on your FreeBSD system:
+Before running NiriSetup, ensure the following dependencies are installed on your GhostBSD system:
 
 - **Go** (for building the application)
 - **Niri** (the Wayland compositor)
